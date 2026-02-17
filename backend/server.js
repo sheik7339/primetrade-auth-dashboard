@@ -7,10 +7,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+const allowedOrigins = [
+  "https://primetrade-auth-dashboard-tau.vercel.app",
+  "http://localhost:5173"
+];
+
 app.use(cors({
-    origin: ["https://primetrade-auth-dashboard-tau.vercel.app", "http://localhost:5173"],
-    credentials: true
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+app.options("*", cors());
 app.use(express.json());
 
 // Routes
