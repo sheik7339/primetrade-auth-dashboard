@@ -1,7 +1,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import PropTypes from 'prop-types';
 import AddTask from '../components/AddTask';
 import TaskList from '../components/TaskList';
@@ -25,10 +25,10 @@ const Dashboard = ({ token, setToken }) => {
       try {
         // Parallel fetching
         const [profileRes, tasksRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/profile', {
+          API.get('/profile', {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get('http://localhost:5000/api/tasks', {
+          API.get('/tasks', {
              headers: { Authorization: `Bearer ${token}` }
           })
         ]);
@@ -53,8 +53,8 @@ const Dashboard = ({ token, setToken }) => {
 
   const handleAddTask = async (text) => {
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/tasks',
+      const response = await API.post(
+        '/tasks',
         { text },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -67,7 +67,7 @@ const Dashboard = ({ token, setToken }) => {
 
   const handleDeleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+      await API.delete(`/tasks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTasks(tasks.filter(task => task.id !== id));

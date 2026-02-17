@@ -4,10 +4,13 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ["https://primetrade-auth-dashboard-tau.vercel.app", "http://localhost:5173"],
+    credentials: true
+}));
 app.use(express.json());
 
 // Routes

@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import PropTypes from 'prop-types';
 
 const Login = ({ setToken }) => {
@@ -17,7 +17,7 @@ const Login = ({ setToken }) => {
     setError('');
     
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await API.post('/login', {
         email,
         password
       });
